@@ -5,7 +5,7 @@ import Index from "./components/AppBody/Index";
 function App() {
   return (
     <>
-      <main className="relative h-screen">
+      <main className="relative h-screen backgroundImage">
         <Navbar />
         <Index />
       </main>
