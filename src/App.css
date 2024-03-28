@@ -1,38 +1,25 @@
-.App {
-  text-align: center;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #f4f6f8;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.white-button {
+  @apply bg-gray-200 hover:bg-gray-300 focus:bg-gray-300 text-gray-700 font-semibold py-2 px-4 mx-2 rounded-lg shadow-md;
+}
+.pink-button {
+  @apply bg-[#854081]  hover:bg-[#70256a] focus:bg-[#70256a] text-white font-semibold py-2 px-4 mx-2 rounded-lg shadow-md;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.red-button {
+  @apply bg-red-500 hover:bg-red-600 focus:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.primary-heading {
+  @apply lg:text-4xl md:text-2xl text-xl font-semibold text-[#70256a] my-4 mx-2;
 }
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.secondary-heading {
+  @apply lg:text-2xl md:text-xl text-lg font-semibold text-black my-4 mx-2;
 }
