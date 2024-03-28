@@ -3,10 +3,10 @@ import { IoSearch } from "react-icons/io5";
 import { useWeatherContext } from "../../context/weather";
 
 const InputForCity = () => {
-  const { city, setCity, getWeatherByCity,getCurrentLocation } = useWeatherContext();
+  const { city, setCity, getWeatherByCity } = useWeatherContext();
   const searchHandle = () => {
-    if (city === "current") {
-      getCurrentLocation()
+    if (city === "") {
+     alert("Please enter a city")
     } else {
       getWeatherByCity();
     }

@@ -5,9 +5,15 @@ import { BsThermometerLow } from "react-icons/bs";
 import { MdWaterDrop } from "react-icons/md";
 import { MdAir } from "react-icons/md";
 import Loader from "../Loader";
+import { BiSolidError } from "react-icons/bi";
 
 const WeatherCard = () => {
-  const { weather: weatherData, loading, error } = useWeatherContext();
+  const {
+    weather: weatherData,
+    loading,
+    error,
+    allowLocation,
+  } = useWeatherContext();
 
   const IconWithText = ({ Icon, text }) => {
     return (
@@ -18,31 +24,31 @@ const WeatherCard = () => {
     );
   };
 
-  if (loading) return <Loader />;
-  if (weatherData === null)
+  const ErrorMessage = ({ title }) => {
     return (
       <div className="flex flex-col items-center justify-center gap-2">
-        <p className="text-[#405068] text-5xl font-semibold">
-          Error
-        </p>
-        <p className="capitalize">
-          Something Going Wrong
-        </p>
+        <BiSolidError className="text-[#405068] text-5xl font-semibold" />
+        <p className="capitalize max-w-80 text-center">{title}</p>
       </div>
     );
+  };
+
+  if (loading) return <Loader />;
+  if (!allowLocation) {
+    return (
+      <ErrorMessage
+        title={
+          "Please allow access to your location for this app to work properly."
+        }
+      />
+    );
+  }
   return (
     <>
       {error ? (
-        <div className="flex flex-col items-center justify-center gap-2">
-          <p className="text-[#406CB1] text-5xl font-semibold">
-            {weatherData.cod}
-          </p>
-          <p className="capitalize">
-            {weatherData.message
-              ? weatherData.message
-              : "Error occurred While fetching data"}
-          </p>
-        </div>
+        <ErrorMessage
+          title={weatherData.message || "Error occurred While fetching data"}
+        />
       ) : (
         <div className="bg-white bg-opacity-50 backdrop-filter backdrop-blur-lg p-4 sm:p-6 mx-4 rounded-xl shadow-md">
           <div className="flex flex-col-reverse sm:flex-row justify-between mb-4">

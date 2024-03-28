@@ -3,12 +3,13 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 const WeatherContext = createContext();
 
 export const WeatherProvider = ({ children }) => {
-  const API_KEY = "dad1b5d24cb8a3a955122de319fa607e";
+  const API_KEY = process.env.REACT_APP_API_KEY;
 
   const [weather, setWeather] = useState(null);
   const [city, setCity] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [allowLocation, setAllowLocation] = useState(false);
 
   const getCurrentLocation = () => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -24,12 +25,12 @@ export const WeatherProvider = ({ children }) => {
       setLoading(true);
       let response = await fetch(url);
       if (!response.ok) {
-        setError("Failed to fetch data");
+        setError(true);
       }
       let data = await response.json();
       setWeather(data);
     } catch (error) {
-      setError("Failed to fetch data");
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -37,25 +38,45 @@ export const WeatherProvider = ({ children }) => {
 
   const getWeatherByCity = async () => {
     setError(false);
+    setAllowLocation(true);
     try {
       let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
       setLoading(true);
       let response = await fetch(url);
 
       if (!response.ok) {
-        setError("Failed to fetch data");
+        setError(true);
       }
 
       let data = await response.json();
       setWeather(data);
     } catch (error) {
-      setError("Failed to fetch data");
+      setError(true);
     } finally {
       setLoading(false);
     }
   };
+
+  const locationAlert = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setAllowLocation(true);
+        },
+        (error) => {
+          setAllowLocation(false);
+        }
+      );
+    } else {
+      // Geolocation not supported by browser
+      alert("Geolocation is not supported by your browser.");
+    }
+  };
+
   useEffect(() => {
+    locationAlert();
     getCurrentLocation();
+
     // eslint-disable-next-line
   }, []);
 
@@ -65,6 +86,7 @@ export const WeatherProvider = ({ children }) => {
     setCity,
     loading,
     error,
+    allowLocation,
     getWeatherByCity,
     getCurrentLocation,
   };
